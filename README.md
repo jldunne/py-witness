@@ -1,6 +1,6 @@
 ## py-witness
 
-A WIP command line tool that verifies interplay between Ethereum access lists and state stree witnesses
+A WIP command line tool that verifies interplay between Ethereum EIP-3584 block access lists and state stree witnesses.
 
 ### Requirements
 
