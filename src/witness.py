@@ -57,16 +57,45 @@ def construct_access_list(transactions):
     return block_access_list
 
 
+def construct_partial_witness(transactions, w3, block_number):
+    from_addresses = []
+    to_addresses = []
+
+    for tx in transactions:
+        from_addresses.append(tx['from'])
+        to_addresses.append(tx.to)
+
+    addresses = set(from_addresses).union(set(to_addresses))
+    addresses = list(addresses)
+
+    proofs = []
+    slots = []
+    for i in range(0,256):
+        slots.append(i)
+
+    for adx in addresses:
+        print("Generating proof for account: "+adx)
+        proof = w3.eth.get_proof(adx, [0])
+        print("Appending proof")
+        proofs.append(proof)
+
+    return proofs
+
+
 def print_block(args, w3):
     # get the block number
     block_number = args.block[0]
     block = w3.eth.get_block(block_number, full_transactions=True)
+
     if not block.transactions[0].accessList:
         return "This block does not contain tx-level access lists - aborting"
     block_access_list = construct_access_list(block.transactions)
     print(block)
     print("Now printing block access list...\n")
     print(block_access_list)
+
+    print("Constructing partial witness")
+    partial_witness = construct_partial_witness(block.transactions, w3, block_number)
 
 
 def main():
