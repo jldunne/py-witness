@@ -70,12 +70,12 @@ def construct_partial_witness(transactions, w3, block_number):
 
     proofs = []
     slots = []
-    for i in range(0,256):
+    for i in range(0, 256):
         slots.append(i)
 
     for adx in addresses:
         print("Generating proof for account: "+adx)
-        proof = w3.eth.get_proof(adx, [0])
+        proof = w3.eth.get_proof(adx, slots, block_number)
         print("Appending proof")
         proofs.append(proof)
 
